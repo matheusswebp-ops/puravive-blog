@@ -17,7 +17,6 @@ export default function Footer() {
         <nav className="footer-nav">
           <Link href="/categoria/articulacao">Categorias</Link>
           <Link href="/sobre">Sobre</Link>
-          <a href="mailto:contato@puravive.com.br">Contato</a>
           <a href="https://www.puravive.com.br">Ver loja</a>
         </nav>
       </div>
