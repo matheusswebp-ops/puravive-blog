@@ -743,7 +743,8 @@ a.pill:hover {
 }
 .article-hero img {
   width: 100%;
-  aspect-ratio: 16 / 8;
+  aspect-ratio: 16 / 7;
+  max-height: 420px;
   object-fit: cover;
   border-radius: 22px;
 }
@@ -766,7 +767,7 @@ a.pill:hover {
   margin-top: 52px;
 }
 .article-body ul {
-  margin: 0;
+  margin: 26px 0 0;
   padding: 0;
   list-style: none;
   display: flex;
@@ -788,7 +789,7 @@ a.pill:hover {
   background: var(--brand);
 }
 .article-body blockquote {
-  margin: 0;
+  margin: 26px 0 0;
   padding: 6px 0 6px 26px;
   border-left: 3px solid var(--brand);
   font-family: var(--font-display);
@@ -804,6 +805,77 @@ a.pill:hover {
   background: var(--brand-soft);
   border-radius: 14px;
   padding: 16px 20px;
+}
+.product-callout {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 24px;
+  background: var(--brand-soft);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  overflow: hidden;
+}
+.product-callout-media {
+  flex-shrink: 0;
+  width: 180px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  align-self: stretch;
+}
+.product-callout-media img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+.product-callout-body {
+  padding: 20px 24px 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+  min-width: 200px;
+}
+.product-callout-body h3 {
+  font-weight: 600;
+  font-size: 1.3rem;
+  color: var(--ink);
+}
+.product-callout-body p {
+  color: var(--ink-soft);
+  font-size: 0.94rem;
+}
+.btn-callout {
+  margin-top: 4px;
+  background: var(--brand);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.88rem;
+  padding: 12px 22px;
+  border-radius: 999px;
+  width: fit-content;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
+}
+.btn-callout:hover {
+  transform: translateY(-1px);
+  background: var(--brand-ink);
+}
+@media (max-width: 500px) {
+  .product-callout-media {
+    width: 100%;
+    padding: 24px 24px 0;
+  }
+  .product-callout-media img {
+    max-width: 160px;
+  }
+  .product-callout-body {
+    padding: 16px 24px 24px;
+  }
 }
 .article-foot {
   max-width: 700px;
