@@ -94,16 +94,6 @@ export default async function PostPage({ params }: Props) {
         dangerouslySetInnerHTML={{ __html: post.content_html }}
       />
 
-      <div className="article-foot">
-        {post.category && (
-          <div className="article-tags">
-            <Link className="pill" href={`/categoria/${post.category.slug}`}>
-              {post.category.name}
-            </Link>
-          </div>
-        )}
-      </div>
-
       {related.length > 0 && (
         <section className="related-wrap wrap">
           <p className="section-label">Continue lendo</p>
