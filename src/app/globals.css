@@ -570,6 +570,18 @@ a.pill:hover {
   background: var(--brand-soft);
   border-block: 1px solid var(--line);
 }
+.category-hero-banner {
+  background: var(--brand-soft);
+  border-block: 1px solid var(--line);
+}
+.category-hero-banner img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.category-hero-meta {
+  padding-block: 20px;
+}
 .category-hero-inner {
   padding-block: clamp(36px, 5vw, 56px);
   max-width: 720px;

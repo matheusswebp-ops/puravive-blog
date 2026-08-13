@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import PostCard from "@/components/PostCard";
@@ -10,6 +11,10 @@ import type { Metadata } from "next";
 
 type Props = {
   params: Promise<{ slug: string }>;
+};
+
+const CATEGORY_BANNERS: Record<string, { src: string; width: number; height: number }> = {
+  articulacao: { src: "/categories/articulacao.png", width: 2172, height: 724 },
 };
 
 export async function generateMetadata({
@@ -44,20 +49,44 @@ export default async function CategoryPage({ params }: Props) {
         <span className="current">{category.name}</span>
       </div>
 
-      <section className="category-hero">
-        <div className="wrap category-hero-inner">
-          <span className="pill pill-tag">Categoria</span>
-          <h1>{category.name}</h1>
-          {category.description && (
-            <p className="category-hero-lead">{category.description}</p>
+      {CATEGORY_BANNERS[slug] ? (
+        <section className="category-hero-banner">
+          <Image
+            src={CATEGORY_BANNERS[slug].src}
+            alt={category.name}
+            width={CATEGORY_BANNERS[slug].width}
+            height={CATEGORY_BANNERS[slug].height}
+            priority
+          />
+          {(category.description || posts.length >= 0) && (
+            <div className="wrap category-hero-meta">
+              {category.description && (
+                <p className="category-hero-lead">{category.description}</p>
+              )}
+              <p className="category-count">
+                {posts.length
+                  ? `${posts.length} ${posts.length > 1 ? "artigos" : "artigo"}`
+                  : "Em breve"}
+              </p>
+            </div>
           )}
-          <p className="category-count">
-            {posts.length
-              ? `${posts.length} ${posts.length > 1 ? "artigos" : "artigo"}`
-              : "Em breve"}
-          </p>
-        </div>
-      </section>
+        </section>
+      ) : (
+        <section className="category-hero">
+          <div className="wrap category-hero-inner">
+            <span className="pill pill-tag">Categoria</span>
+            <h1>{category.name}</h1>
+            {category.description && (
+              <p className="category-hero-lead">{category.description}</p>
+            )}
+            <p className="category-count">
+              {posts.length
+                ? `${posts.length} ${posts.length > 1 ? "artigos" : "artigo"}`
+                : "Em breve"}
+            </p>
+          </div>
+        </section>
+      )}
 
       <div className="wrap other-cats">
         <span className="label">Outras áreas:</span>
