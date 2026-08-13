@@ -11,11 +11,19 @@ export default async function HomePage() {
       <section className="hero">
         <Link href={featured ? `/${featured.slug}` : "/"}>
           <Image
-            className="hero-banner"
+            className="hero-banner hero-banner-desktop"
             src="https://ierdkwezlsxkknjzokyy.supabase.co/storage/v1/object/public/covers/hero-banner-v2.png"
             alt="Sua saúde tem várias partes. A gente cuida de todas."
             width={2051}
             height={767}
+            priority
+          />
+          <Image
+            className="hero-banner hero-banner-mobile"
+            src="https://ierdkwezlsxkknjzokyy.supabase.co/storage/v1/object/public/covers/hero-banner-mobile.png"
+            alt="Sua saúde tem várias partes. A gente cuida de todas."
+            width={1122}
+            height={1402}
             priority
           />
         </Link>

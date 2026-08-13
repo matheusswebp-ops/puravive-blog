@@ -446,6 +446,11 @@ a.pill:hover {
 .hero-banner {
   width: 100%;
   height: auto;
+}
+.hero-banner-mobile {
+  display: none;
+}
+.hero-banner-desktop {
   display: block;
 }
 .grid-wrap {
@@ -966,6 +971,12 @@ a.pill:hover {
   }
 }
 @media (max-width: 620px) {
+  .hero-banner-desktop {
+    display: none;
+  }
+  .hero-banner-mobile {
+    display: block;
+  }
   .grid-wrap .post-grid,
   .posts-wrap .post-grid,
   .related-wrap .post-grid {
