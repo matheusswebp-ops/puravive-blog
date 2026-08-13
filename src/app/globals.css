@@ -628,6 +628,15 @@ a.pill:hover {
   background: var(--brand-soft);
   border-block: 1px solid var(--line);
 }
+.about-hero-banner {
+  background: var(--brand-soft);
+  border-block: 1px solid var(--line);
+}
+.about-hero-banner img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
 .about-hero-inner {
   padding-block: clamp(40px, 6vw, 64px);
   max-width: 680px;

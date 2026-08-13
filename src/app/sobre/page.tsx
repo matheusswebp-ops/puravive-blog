@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { LeafIcon, ShieldIcon, BadgeIcon, ChatIcon } from "@/components/PillarIcons";
@@ -17,16 +18,14 @@ export default function AboutPage() {
         <span className="current">Sobre</span>
       </div>
 
-      <section className="about-hero">
-        <div className="wrap about-hero-inner">
-          <span className="pill pill-tag">Sobre</span>
-          <h1>Cuidado que começa antes do produto.</h1>
-          <p className="about-hero-lead">
-            A PuraVive nasceu pra oferecer suplementação natural pra quem já
-            passou da fase de acreditar em solução mágica e quer entender o
-            que realmente funciona no corpo.
-          </p>
-        </div>
+      <section className="about-hero-banner">
+        <Image
+          src="/about/hero.png"
+          alt="Cuidado que começa antes do produto. A PuraVive nasceu pra oferecer suplementação natural pra quem já passou da fase de acreditar em solução mágica e quer entender o que realmente funciona no corpo."
+          width={1914}
+          height={822}
+          priority
+        />
       </section>
 
       <section className="wrap about-body">
