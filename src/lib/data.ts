@@ -3,13 +3,24 @@ import type { Category, Post, PostWithCategory } from "@/lib/types";
 
 const POST_WITH_CATEGORY = "*, category:categories(*)";
 
+const PINNED_CATEGORY_SLUG = "articulacao";
+
 export async function getCategories(): Promise<Category[]> {
   const supabase = await createClient();
   const { data } = await supabase
     .from("categories")
     .select("*")
     .order("name");
-  return data ?? [];
+
+  const categories = data ?? [];
+  const pinnedIndex = categories.findIndex(
+    (c) => c.slug === PINNED_CATEGORY_SLUG
+  );
+  if (pinnedIndex > 0) {
+    const [pinned] = categories.splice(pinnedIndex, 1);
+    categories.unshift(pinned);
+  }
+  return categories;
 }
 
 export async function getCategoryBySlug(
