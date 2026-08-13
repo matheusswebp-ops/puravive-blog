@@ -12,10 +12,10 @@ export default async function HomePage() {
         <Link href={featured ? `/${featured.slug}` : "/"}>
           <Image
             className="hero-banner"
-            src="https://ierdkwezlsxkknjzokyy.supabase.co/storage/v1/object/public/covers/hero-banner.png"
+            src="https://ierdkwezlsxkknjzokyy.supabase.co/storage/v1/object/public/covers/hero-banner.webp"
             alt="Sua saúde tem várias partes. A gente cuida de todas."
-            width={1672}
-            height={941}
+            width={1920}
+            height={712}
             priority
           />
         </Link>
