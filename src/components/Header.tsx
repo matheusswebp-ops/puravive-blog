@@ -44,7 +44,7 @@ export default function Header({ categories }: { categories: Category[] }) {
               Blog
             </Link>
             <Link
-              href="/categoria/constipacao"
+              href="/categoria/articulacao"
               className={isCategory ? "active" : ""}
             >
               Categorias
@@ -101,7 +101,7 @@ export default function Header({ categories }: { categories: Category[] }) {
               Blog
             </Link>
             <Link
-              href="/categoria/constipacao"
+              href="/categoria/articulacao"
               className={isCategory ? "active" : ""}
             >
               Categorias <span className="chev">→</span>
