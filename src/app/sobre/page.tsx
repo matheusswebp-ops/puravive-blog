@@ -35,8 +35,8 @@ export default function AboutPage() {
           mais devagar, queda de cabelo, disposição em baixa: são queixas de
           fases e frentes bem diferentes, e raramente têm uma causa só. Foi
           pensando nisso que a PuraVive desenvolve suplementos naturais pra
-          áreas específicas — digestão, articulações, emagrecimento, sono,
-          beleza, saúde feminina, performance masculina e bem-estar geral —
+          áreas específicas: digestão, articulações, emagrecimento, sono,
+          beleza, saúde feminina, performance masculina e bem-estar geral,
           em vez de prometer uma fórmula única pra tudo.
         </p>
         <p>

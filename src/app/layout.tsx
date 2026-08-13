@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     template: "%s · Blog PuraVive",
   },
   description:
-    "Conteúdo sobre digestão, articulações, metabolismo, sono, beleza e energia — pra cuidar do corpo inteiro.",
+    "Conteúdo sobre digestão, articulações, metabolismo, sono, beleza e energia, pra cuidar do corpo inteiro.",
 };
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
