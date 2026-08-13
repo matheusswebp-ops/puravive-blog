@@ -654,15 +654,19 @@ a.pill:hover {
   max-width: 56ch;
 }
 .about-body {
-  max-width: 700px;
+  max-width: 860px;
   padding-inline: clamp(20px, 5vw, 64px);
   padding-block: clamp(36px, 5vw, 52px) 0;
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  font-size: 1.05rem;
-  line-height: 1.75;
+  gap: 24px;
+  font-size: clamp(1.1rem, 1.6vw, 1.3rem);
+  line-height: 1.7;
   color: var(--ink);
+}
+.about-body strong {
+  color: var(--brand-ink);
+  font-weight: 600;
 }
 .about-body-blog {
   padding-block: 8px clamp(36px, 5vw, 52px);
