@@ -31,8 +31,9 @@ export default async function HomePage() {
                   <Image
                     src={featured.cover_image_url}
                     alt={featured.title}
-                    width={800}
-                    height={600}
+                    fill
+                    sizes="(max-width: 900px) 100vw, 55vw"
+                    style={{ objectFit: "cover" }}
                   />
                 )}
               </div>

@@ -461,13 +461,9 @@ a.pill:hover {
   box-shadow: var(--shadow);
 }
 .featured-media {
+  position: relative;
   min-height: 380px;
   background: var(--brand-soft);
-}
-.featured-media img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
 .featured-body {
   padding: clamp(28px, 4vw, 52px);
