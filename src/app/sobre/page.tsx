@@ -20,10 +20,19 @@ export default function AboutPage() {
 
       <section className="about-hero-banner">
         <Image
+          className="hero-banner-desktop"
           src="/about/hero.png"
           alt="Cuidado que começa antes do produto. A PuraVive nasceu pra oferecer suplementação natural pra quem já passou da fase de acreditar em solução mágica e quer entender o que realmente funciona no corpo."
           width={1914}
           height={822}
+          priority
+        />
+        <Image
+          className="hero-banner-mobile"
+          src="https://ierdkwezlsxkknjzokyy.supabase.co/storage/v1/object/public/covers/about-hero-mobile.png"
+          alt="Cuidado que começa antes do produto. A PuraVive nasceu pra oferecer suplementação natural pra quem já passou da fase de acreditar em solução mágica e quer entender o que realmente funciona no corpo."
+          width={1122}
+          height={1402}
           priority
         />
       </section>
