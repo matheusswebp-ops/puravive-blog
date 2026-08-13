@@ -69,20 +69,6 @@ export default async function HomePage() {
             <PostCard key={post.id} post={post} />
           ))}
         </div>
-
-        <div className="topics-banner">
-          <div className="topics-banner-text">
-            <span className="pill pill-tag">+ áreas</span>
-            <h3>Tem muito mais no blog</h3>
-            <p>
-              Digestão, Beleza, Saúde Feminina, Performance Masculina e Saúde
-              e Bem-estar: cada área da sua rotina tem conteúdo próprio.
-            </p>
-          </div>
-          <Link className="read-link" href="/categoria/digestao">
-            Ver todos os temas <span aria-hidden="true">→</span>
-          </Link>
-        </div>
       </section>
 
       <section className="cta-band">
