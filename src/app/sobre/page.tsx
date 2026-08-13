@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { getCategories } from "@/lib/data";
+import { LeafIcon, ShieldIcon, BadgeIcon, ChatIcon } from "@/components/PillarIcons";
 
 export const metadata: Metadata = {
   title: "Sobre",
@@ -8,9 +8,7 @@ export const metadata: Metadata = {
     "Conheça a proposta da PuraVive e do blog: suplementação natural e conteúdo pra cuidar do corpo inteiro.",
 };
 
-export default async function AboutPage() {
-  const categories = await getCategories();
-
+export default function AboutPage() {
   return (
     <>
       <div className="wrap breadcrumb">
@@ -50,6 +48,9 @@ export default async function AboutPage() {
         <p className="section-label">O que guia a PuraVive</p>
         <div className="pillars-grid">
           <div className="pillar-card">
+            <div className="pillar-icon">
+              <LeafIcon />
+            </div>
             <h3>100% natural</h3>
             <p>
               Fórmulas desenvolvidas com ingredientes naturais, sem depender
@@ -57,6 +58,9 @@ export default async function AboutPage() {
             </p>
           </div>
           <div className="pillar-card">
+            <div className="pillar-icon">
+              <ShieldIcon />
+            </div>
             <h3>Aprovado pela ANVISA</h3>
             <p>
               Todos os produtos têm registro e passam pelos critérios de
@@ -64,6 +68,9 @@ export default async function AboutPage() {
             </p>
           </div>
           <div className="pillar-card">
+            <div className="pillar-icon">
+              <BadgeIcon />
+            </div>
             <h3>Garantia de 365 dias</h3>
             <p>
               Se não sentir diferença, você tem um ano inteiro pra pedir
@@ -71,38 +78,15 @@ export default async function AboutPage() {
             </p>
           </div>
           <div className="pillar-card">
+            <div className="pillar-icon">
+              <ChatIcon />
+            </div>
             <h3>Suporte antes da compra</h3>
             <p>
               Dúvida sobre qual produto faz sentido pra você? Tem gente de
               verdade pra responder antes de decidir.
             </p>
           </div>
-        </div>
-      </section>
-
-      <section className="wrap about-body about-body-blog">
-        <p className="section-label">Sobre o conteúdo daqui</p>
-        <p>
-          Os artigos do blog são escritos pela equipe PuraVive com base em
-          fontes públicas e no conhecimento acumulado sobre os temas que
-          também guiam nossos produtos: digestão, articulações, sono,
-          metabolismo, beleza e bem-estar geral.
-        </p>
-        <p>
-          Nada aqui substitui uma consulta médica. A ideia é ajudar você a
-          chegar mais informado na conversa com quem cuida da sua saúde, não
-          substituir esse cuidado.
-        </p>
-      </section>
-
-      <section className="wrap about-categories-wrap">
-        <p className="section-label">Explore por área</p>
-        <div className="pill-row">
-          {categories.map((c) => (
-            <Link key={c.id} className="pill" href={`/categoria/${c.slug}`}>
-              {c.name}
-            </Link>
-          ))}
         </div>
       </section>
 
