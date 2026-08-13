@@ -32,10 +32,12 @@ export default function AboutPage() {
       <section className="wrap about-body">
         <p>
           Prisão de ventre, dor nas articulações, sono mais leve, metabolismo
-          mais devagar: são queixas comuns depois de uma certa idade, e
-          raramente têm uma causa só. Foi pensando nisso que a PuraVive passou
-          a desenvolver suplementos naturais voltados pra cada uma dessas
-          áreas, em vez de prometer uma fórmula única pra tudo.
+          mais devagar, queda de cabelo, disposição em baixa: são queixas de
+          fases e frentes bem diferentes, e raramente têm uma causa só. Foi
+          pensando nisso que a PuraVive desenvolve suplementos naturais pra
+          áreas específicas — digestão, articulações, emagrecimento, sono,
+          beleza, saúde feminina, performance masculina e bem-estar geral —
+          em vez de prometer uma fórmula única pra tudo.
         </p>
         <p>
           Esse blog nasceu do mesmo princípio. Antes de vender um produto, a
