@@ -743,9 +743,10 @@ a.pill:hover {
 }
 .article-hero img {
   width: 100%;
-  aspect-ratio: 21 / 8;
-  max-height: 280px;
+  aspect-ratio: 2.2 / 1;
+  max-height: 320px;
   object-fit: cover;
+  object-position: center 20%;
   border-radius: 22px;
 }
 .article-body {
