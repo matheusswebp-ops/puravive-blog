@@ -21,51 +21,10 @@ export default async function HomePage() {
         </Link>
       </section>
 
-      {featured && (
-        <section className="featured-wrap wrap">
-          <p className="section-label">Em destaque</p>
-          <article className="featured-card">
-            <Link href={`/${featured.slug}`}>
-              <div className="featured-media">
-                {featured.cover_image_url && (
-                  <Image
-                    src={featured.cover_image_url}
-                    alt={featured.title}
-                    fill
-                    sizes="(max-width: 900px) 100vw, 55vw"
-                    style={{ objectFit: "cover" }}
-                  />
-                )}
-              </div>
-            </Link>
-            <div className="featured-body">
-              {featured.category && (
-                <Link href={`/categoria/${featured.category.slug}`}>
-                  <span className="pill pill-tag">
-                    {featured.category.name}
-                  </span>
-                </Link>
-              )}
-              <Link href={`/${featured.slug}`}>
-                <h2>{featured.title}</h2>
-              </Link>
-              <p>{featured.excerpt}</p>
-              <div className="meta-row">
-                <span>Equipe PuraVive</span>
-                <span className="dot">•</span>
-                <span>Leitura completa</span>
-              </div>
-              <Link className="read-link" href={`/${featured.slug}`}>
-                Ler artigo <span aria-hidden="true">→</span>
-              </Link>
-            </div>
-          </article>
-        </section>
-      )}
-
       <section className="grid-wrap wrap">
         <p className="section-label">Mais recentes</p>
         <div className="post-grid">
+          {featured && <PostCard post={featured} />}
           {grid.map((post) => (
             <PostCard key={post.id} post={post} />
           ))}

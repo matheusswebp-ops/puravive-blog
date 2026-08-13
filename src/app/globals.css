@@ -448,39 +448,6 @@ a.pill:hover {
   height: auto;
   display: block;
 }
-.featured-wrap {
-  padding-block: clamp(48px, 6vw, 72px) 8px;
-}
-.featured-card {
-  display: grid;
-  grid-template-columns: 1.15fr 1fr;
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 28px;
-  overflow: hidden;
-  box-shadow: var(--shadow);
-}
-.featured-media {
-  position: relative;
-  min-height: 380px;
-  background: var(--brand-soft);
-}
-.featured-body {
-  padding: clamp(28px, 4vw, 52px);
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  justify-content: center;
-}
-.featured-body h2 {
-  font-weight: 600;
-  font-size: clamp(1.5rem, 2.6vw, 2.05rem);
-  line-height: 1.18;
-}
-.featured-body > p {
-  color: var(--ink-soft);
-  font-size: 1.02rem;
-}
 .grid-wrap {
   padding-block: clamp(48px, 6vw, 72px);
 }
@@ -989,12 +956,6 @@ a.pill:hover {
   }
   .menu-toggle {
     display: flex;
-  }
-  .featured-card {
-    grid-template-columns: 1fr;
-  }
-  .featured-media {
-    min-height: 260px;
   }
   .posts-wrap .post-grid,
   .related-wrap .post-grid {
