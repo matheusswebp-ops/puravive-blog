@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import PostCard from "@/components/PostCard";
+import ProductCallout from "@/components/ProductCallout";
 import { getPostBySlug, getRelatedPosts } from "@/lib/data";
 import type { Metadata } from "next";
 
@@ -93,6 +94,12 @@ export default async function PostPage({ params }: Props) {
         className="article-body"
         dangerouslySetInnerHTML={{ __html: post.content_html }}
       />
+
+      {post.product_name && (
+        <div className="product-callout-wrap">
+          <ProductCallout post={post} />
+        </div>
+      )}
 
       {related.length > 0 && (
         <section className="related-wrap wrap">

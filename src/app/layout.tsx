@@ -1,9 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import { getCategories } from "@/lib/data";
 
 const fraunces = localFont({
   src: [
@@ -29,16 +26,10 @@ export const metadata: Metadata = {
     "Conteúdo sobre digestão, articulações, metabolismo, sono, beleza e energia, pra cuidar do corpo inteiro.",
 };
 
-export default async function RootLayout({ children }: LayoutProps<"/">) {
-  const categories = await getCategories();
-
+export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="pt-BR" className={`${fraunces.variable} ${worksans.variable}`}>
-      <body className="flex flex-col min-h-screen">
-        <Header categories={categories} />
-        <main className="flex-1">{children}</main>
-        <Footer />
-      </body>
+      <body className="flex flex-col min-h-screen">{children}</body>
     </html>
   );
 }

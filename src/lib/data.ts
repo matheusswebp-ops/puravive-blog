@@ -118,3 +118,22 @@ export async function getAllPublishedPostSlugs(): Promise<
   const { data } = await supabase.from("posts").select("slug, updated_at");
   return data ?? [];
 }
+
+export async function getAllPostsForAdmin(): Promise<PostWithCategory[]> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("posts")
+    .select(POST_WITH_CATEGORY)
+    .order("updated_at", { ascending: false });
+  return (data as PostWithCategory[] | null) ?? [];
+}
+
+export async function getPostById(id: string): Promise<PostWithCategory | null> {
+  const supabase = await createClient();
+  const { data } = await supabase
+    .from("posts")
+    .select(POST_WITH_CATEGORY)
+    .eq("id", id)
+    .maybeSingle();
+  return data as PostWithCategory | null;
+}
