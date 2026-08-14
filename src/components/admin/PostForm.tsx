@@ -193,6 +193,10 @@ export default function PostForm({ categories, post, action }: Props) {
             className="scheduled-input"
           />
         )}
+        <p className="field-hint">
+          Escolher aqui só marca a opção. Clica no botão no final da página
+          pra confirmar.
+        </p>
       </div>
 
       <details
@@ -276,7 +280,15 @@ export default function PostForm({ categories, post, action }: Props) {
 
       {state.error && <p className="field-error">{state.error}</p>}
 
-      <SubmitButton label={post ? "Salvar alterações" : "Criar post"} />
+      <SubmitButton
+        label={
+          status === "publicado"
+            ? "Publicar"
+            : status === "agendado"
+              ? "Agendar post"
+              : "Salvar rascunho"
+        }
+      />
     </form>
   );
 }
