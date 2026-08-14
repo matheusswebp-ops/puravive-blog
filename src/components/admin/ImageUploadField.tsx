@@ -8,9 +8,15 @@ type Props = {
   label: string;
   value: string;
   onChange: (url: string) => void;
+  hint?: string;
 };
 
-export default function ImageUploadField({ label, value, onChange }: Props) {
+export default function ImageUploadField({
+  label,
+  value,
+  onChange,
+  hint,
+}: Props) {
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -43,6 +49,7 @@ export default function ImageUploadField({ label, value, onChange }: Props) {
   return (
     <div className="field">
       <label className="field-label">{label}</label>
+      {hint && <p className="field-hint">{hint}</p>}
       {value && (
         <div className="image-preview">
           <Image src={value} alt="" width={160} height={160} />

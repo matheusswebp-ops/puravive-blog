@@ -130,6 +130,7 @@ export default function PostForm({ categories, post, action }: Props) {
         label="Imagem de capa"
         value={coverImageUrl}
         onChange={setCoverImageUrl}
+        hint="Tamanho ideal: 1600 x 900px (formato paisagem, 16:9). Outros tamanhos funcionam, mas essa proporção evita corte estranho."
       />
 
       <div className="field">
@@ -220,6 +221,7 @@ export default function PostForm({ categories, post, action }: Props) {
             label="Imagem do produto"
             value={productImageUrl}
             onChange={setProductImageUrl}
+            hint="Tamanho ideal: 800 x 800px (quadrada), fundo branco ou transparente."
           />
           <div className="field">
             <label className="field-label" htmlFor="product_description">
