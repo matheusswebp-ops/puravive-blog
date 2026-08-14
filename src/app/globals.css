@@ -1184,6 +1184,14 @@ a.pill:hover {
   color: #b91c1c;
   font-size: 0.85rem;
 }
+.field-success {
+  color: var(--brand-ink);
+  background: var(--brand-soft);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
 .field-hint {
   color: var(--ink-soft);
   font-size: 0.82rem;

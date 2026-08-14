@@ -44,7 +44,7 @@ export async function logout() {
   redirect("/admin/login");
 }
 
-export type PostFormState = { error: string | null };
+export type PostFormState = { error: string | null; savedAt?: number };
 
 function readPostFields(formData: FormData) {
   const title = String(formData.get("title") || "").trim();
@@ -148,7 +148,7 @@ export async function updatePost(
   if (existing?.slug && existing.slug !== fields.slug) {
     revalidatePath(`/${existing.slug}`);
   }
-  return { error: null };
+  return { error: null, savedAt: Date.now() };
 }
 
 export async function deletePost(postId: string) {

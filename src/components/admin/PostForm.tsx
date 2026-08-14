@@ -279,6 +279,9 @@ export default function PostForm({ categories, post, action }: Props) {
       </details>
 
       {state.error && <p className="field-error">{state.error}</p>}
+      {!state.error && state.savedAt && (
+        <p className="field-success">Salvo com sucesso.</p>
+      )}
 
       <SubmitButton
         label={
