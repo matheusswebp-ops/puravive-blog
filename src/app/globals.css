@@ -814,36 +814,34 @@ a.pill:hover {
 }
 .product-callout {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   align-items: center;
-  gap: 24px;
   background: var(--brand-soft);
   border: 1px solid var(--line);
   border-radius: 22px;
   overflow: hidden;
 }
 .product-callout-media {
-  flex-shrink: 0;
-  width: 180px;
+  width: 100%;
   background: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 18px;
-  align-self: stretch;
+  padding: 32px;
 }
 .product-callout-media img {
   width: 100%;
+  max-width: 220px;
   height: auto;
   object-fit: contain;
 }
 .product-callout-body {
-  padding: 20px 24px 20px 0;
+  padding: 24px 28px 32px;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 10px;
-  flex: 1;
-  min-width: 200px;
+  text-align: center;
 }
 .product-callout-body h3 {
   font-weight: 600;
@@ -853,6 +851,7 @@ a.pill:hover {
 .product-callout-body p {
   color: var(--ink-soft);
   font-size: 0.94rem;
+  max-width: 44ch;
 }
 .btn-callout {
   margin-top: 4px;
@@ -870,18 +869,6 @@ a.pill:hover {
 .btn-callout:hover {
   transform: translateY(-1px);
   background: var(--brand-ink);
-}
-@media (max-width: 500px) {
-  .product-callout-media {
-    width: 100%;
-    padding: 24px 24px 0;
-  }
-  .product-callout-media img {
-    max-width: 160px;
-  }
-  .product-callout-body {
-    padding: 16px 24px 24px;
-  }
 }
 .article-foot {
   max-width: 700px;
