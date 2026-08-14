@@ -91,11 +91,9 @@ export async function createPost(
   if (!fields.title) return { error: "Título é obrigatório." };
   if (!fields.slug) return { error: "Não foi possível gerar o link do post." };
 
-  const { data, error } = await supabase
+  const { error } = await supabase
     .from("posts")
-    .insert({ ...fields, author_id: user.id })
-    .select("id")
-    .single();
+    .insert({ ...fields, author_id: user.id });
 
   if (error) {
     if (error.code === "23505") {
@@ -106,7 +104,7 @@ export async function createPost(
 
   revalidatePath("/admin");
   revalidatePath("/");
-  redirect(`/admin/posts/${data.id}`);
+  redirect("/admin");
 }
 
 export async function updatePost(
