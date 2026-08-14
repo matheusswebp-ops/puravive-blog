@@ -148,7 +148,7 @@ export async function updatePost(
   if (existing?.slug && existing.slug !== fields.slug) {
     revalidatePath(`/${existing.slug}`);
   }
-  return { error: null, savedAt: Date.now() };
+  redirect("/admin");
 }
 
 export async function deletePost(postId: string) {
