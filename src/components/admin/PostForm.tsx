@@ -47,6 +47,9 @@ export default function PostForm({ categories, post, action }: Props) {
     post?.cover_image_url ?? ""
   );
   const [status, setStatus] = useState<PostStatus>(post?.status ?? "rascunho");
+  const [scheduledAt, setScheduledAt] = useState(
+    toDatetimeLocal(post?.published_at ?? null)
+  );
   const [showSeo, setShowSeo] = useState(false);
   const [showProduct, setShowProduct] = useState(
     Boolean(post?.product_name)
@@ -186,13 +189,23 @@ export default function PostForm({ categories, post, action }: Props) {
           </label>
         </div>
         {status === "agendado" && (
-          <input
-            type="datetime-local"
-            name="scheduled_at"
-            defaultValue={toDatetimeLocal(post?.published_at ?? null)}
-            required
-            className="scheduled-input"
-          />
+          <>
+            <input
+              type="datetime-local"
+              value={scheduledAt}
+              onChange={(e) => setScheduledAt(e.target.value)}
+              required
+              className="scheduled-input"
+            />
+            {/* O datetime-local não carrega fuso nenhum: mandar o valor cru
+                faria o banco ler a hora como UTC e o post sairia 3h adiantado.
+                Aqui no navegador o fuso é o seu, então a conversão é correta. */}
+            <input
+              type="hidden"
+              name="scheduled_at"
+              value={scheduledAt ? new Date(scheduledAt).toISOString() : ""}
+            />
+          </>
         )}
         <p className="field-hint">
           Escolher aqui só marca a opção. Clica no botão no final da página
