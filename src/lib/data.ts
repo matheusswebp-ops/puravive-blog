@@ -3,24 +3,52 @@ import type { Category, Post, PostWithCategory } from "@/lib/types";
 
 const POST_WITH_CATEGORY = "*, category:categories(*)";
 
-const PINNED_CATEGORY_SLUG = "articulacao";
+// A ordem do menu vem da coluna position, editável no admin. Antes a
+// categoria do topo estava fixada no código.
+//
+// A coluna só passa a existir depois do supabase/agendamento-e-categorias.sql;
+// até lá o banco recusa a ordenação e caímos de volta no nome, pra o menu do
+// blog não ficar vazio enquanto a migração não roda.
+async function fetchCategoriesOrdered(
+  supabase: Awaited<ReturnType<typeof createClient>>
+): Promise<Category[]> {
+  const byPosition = await supabase
+    .from("categories")
+    .select("*")
+    .order("position")
+    .order("name");
+
+  if (!byPosition.error) return (byPosition.data as Category[]) ?? [];
+
+  const byName = await supabase.from("categories").select("*").order("name");
+  return (byName.data as Category[]) ?? [];
+}
 
 export async function getCategories(): Promise<Category[]> {
   const supabase = await createClient();
-  const { data } = await supabase
-    .from("categories")
-    .select("*")
-    .order("name");
+  return fetchCategoriesOrdered(supabase);
+}
 
-  const categories = data ?? [];
-  const pinnedIndex = categories.findIndex(
-    (c) => c.slug === PINNED_CATEGORY_SLUG
-  );
-  if (pinnedIndex > 0) {
-    const [pinned] = categories.splice(pinnedIndex, 1);
-    categories.unshift(pinned);
+export async function getCategoriesWithCounts(): Promise<
+  (Category & { postCount: number })[]
+> {
+  const supabase = await createClient();
+  const [categories, { data: posts }] = await Promise.all([
+    fetchCategoriesOrdered(supabase),
+    supabase.from("posts").select("category_id"),
+  ]);
+
+  const counts = new Map<string, number>();
+  for (const post of posts ?? []) {
+    if (post.category_id) {
+      counts.set(post.category_id, (counts.get(post.category_id) ?? 0) + 1);
+    }
   }
-  return categories;
+
+  return categories.map((c) => ({
+    ...c,
+    postCount: counts.get(c.id) ?? 0,
+  }));
 }
 
 export async function getCategoryBySlug(

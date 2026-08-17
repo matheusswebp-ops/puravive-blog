@@ -2,6 +2,7 @@ import Link from "next/link";
 import AdminHeader from "@/components/admin/AdminHeader";
 import PostStatusToggle from "@/components/admin/PostStatusToggle";
 import { getAllPostsForAdmin } from "@/lib/data";
+import { effectiveStatus } from "@/lib/post-status";
 import type { PostStatus } from "@/lib/types";
 
 const STATUS_LABEL: Record<string, string> = {
@@ -27,7 +28,9 @@ export default async function AdminDashboard({
   searchParams: Promise<{ status?: string }>;
 }) {
   const { status } = await searchParams;
-  const posts = await getAllPostsForAdmin();
+  const raw = await getAllPostsForAdmin();
+  // Agendado cuja hora chegou já conta como publicado nas abas e na etiqueta.
+  const posts = raw.map((p) => ({ ...p, status: effectiveStatus(p) }));
 
   const active =
     TABS.find((t) => t.key === status)?.key ?? ("todos" as const);

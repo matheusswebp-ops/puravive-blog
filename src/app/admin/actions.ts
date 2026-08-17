@@ -150,6 +150,125 @@ export async function updatePost(
   redirect("/admin");
 }
 
+export type CategoryFormState = { error: string | null; savedAt?: number };
+
+function readCategoryFields(formData: FormData) {
+  const name = String(formData.get("name") || "").trim();
+  const rawSlug = String(formData.get("slug") || "").trim();
+  const rawPosition = String(formData.get("position") || "").trim();
+
+  return {
+    name,
+    slug: rawSlug ? slugify(rawSlug) : slugify(name),
+    description: String(formData.get("description") || "").trim() || null,
+    position: rawPosition === "" ? 100 : Number(rawPosition),
+  };
+}
+
+async function requireUser() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  return { supabase, user };
+}
+
+function categoryError(code: string | undefined, message: string) {
+  if (code === "23505") {
+    return { error: "Já existe uma categoria com esse link. Mude o link." };
+  }
+  return { error: message };
+}
+
+export async function createCategory(
+  _prevState: CategoryFormState,
+  formData: FormData
+): Promise<CategoryFormState> {
+  const { supabase, user } = await requireUser();
+  if (!user) return { error: "Sessão expirada, faça login de novo." };
+
+  const fields = readCategoryFields(formData);
+  if (!fields.name) return { error: "O nome é obrigatório." };
+  if (!fields.slug) return { error: "Não foi possível gerar o link." };
+  if (!Number.isFinite(fields.position)) {
+    return { error: "A ordem precisa ser um número." };
+  }
+
+  const { error } = await supabase.from("categories").insert(fields);
+  if (error) return categoryError(error.code, error.message);
+
+  revalidatePath("/admin/categorias");
+  revalidatePath("/", "layout");
+  return { error: null, savedAt: Date.now() };
+}
+
+export async function updateCategory(
+  categoryId: string,
+  _prevState: CategoryFormState,
+  formData: FormData
+): Promise<CategoryFormState> {
+  const { supabase, user } = await requireUser();
+  if (!user) return { error: "Sessão expirada, faça login de novo." };
+
+  const fields = readCategoryFields(formData);
+  if (!fields.name) return { error: "O nome é obrigatório." };
+  if (!fields.slug) return { error: "Não foi possível gerar o link." };
+  if (!Number.isFinite(fields.position)) {
+    return { error: "A ordem precisa ser um número." };
+  }
+
+  const { data: existing } = await supabase
+    .from("categories")
+    .select("slug")
+    .eq("id", categoryId)
+    .maybeSingle();
+
+  const { error } = await supabase
+    .from("categories")
+    .update(fields)
+    .eq("id", categoryId);
+  if (error) return categoryError(error.code, error.message);
+
+  revalidatePath("/admin/categorias");
+  revalidatePath("/", "layout");
+  revalidatePath(`/categoria/${fields.slug}`);
+  if (existing?.slug && existing.slug !== fields.slug) {
+    revalidatePath(`/categoria/${existing.slug}`);
+  }
+  return { error: null, savedAt: Date.now() };
+}
+
+export async function deleteCategory(
+  categoryId: string,
+  _prevState: CategoryFormState,
+  _formData: FormData
+): Promise<CategoryFormState> {
+  const { supabase, user } = await requireUser();
+  if (!user) return { error: "Sessão expirada, faça login de novo." };
+
+  // Apagar uma categoria com posts deixaria os posts órfãos no menu do blog.
+  const { count } = await supabase
+    .from("posts")
+    .select("id", { count: "exact", head: true })
+    .eq("category_id", categoryId);
+
+  if ((count ?? 0) > 0) {
+    return {
+      error: `Essa categoria tem ${count} post${count === 1 ? "" : "s"}. Mova ${count === 1 ? "ele" : "eles"} para outra categoria antes de apagar.`,
+    };
+  }
+
+  const { error } = await supabase
+    .from("categories")
+    .delete()
+    .eq("id", categoryId);
+  if (error) return { error: error.message };
+
+  revalidatePath("/admin/categorias");
+  revalidatePath("/", "layout");
+  return { error: null, savedAt: Date.now() };
+}
+
 export async function setPostStatus(postId: string, nextStatus: PostStatus) {
   const supabase = await createClient();
   const {

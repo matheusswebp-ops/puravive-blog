@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 // Toda tela nova do admin entra aqui — é o menu principal.
 const SECTIONS = [
   { href: "/admin", label: "Posts" },
+  { href: "/admin/categorias", label: "Categorias" },
   { href: "/admin/metricas", label: "Métricas" },
 ];
 
