@@ -3,6 +3,30 @@ import type { Category, Post, PostWithCategory } from "@/lib/types";
 
 const POST_WITH_CATEGORY = "*, category:categories(*)";
 
+// O que o blog mostra: publicado, mais agendado cuja hora já chegou.
+//
+// Não dá pra deixar isso só por conta da regra do banco. A regra esconde de
+// visitante anônimo, mas as páginas do site rodam com a sessão de quem está
+// no navegador — com o admin logado, elas passavam a enxergar rascunho e
+// agendado. O blog ficava diferente pra quem escreve e pra quem lê, e um
+// post agendado parecia já estar no ar.
+function visibleFilter() {
+  const now = new Date().toISOString();
+  return `status.eq.publicado,and(status.eq.agendado,published_at.lte.${now})`;
+}
+
+export function isPubliclyVisible(post: {
+  status: string;
+  published_at: string | null;
+}) {
+  if (post.status === "publicado") return true;
+  return (
+    post.status === "agendado" &&
+    post.published_at !== null &&
+    new Date(post.published_at).getTime() <= Date.now()
+  );
+}
+
 // A ordem do menu vem da coluna position, editável no admin. Antes a
 // categoria do topo estava fixada no código.
 //
@@ -72,6 +96,7 @@ export async function getPostsByCategory(
     .from("posts")
     .select(POST_WITH_CATEGORY)
     .eq("category_id", categoryId)
+    .or(visibleFilter())
     .order("published_at", { ascending: false });
 
   if (limit) query = query.limit(limit);
@@ -88,6 +113,7 @@ export async function getHomeFeed(): Promise<{
   const { data } = await supabase
     .from("posts")
     .select(POST_WITH_CATEGORY)
+    .or(visibleFilter())
     .order("published_at", { ascending: false })
     .limit(4);
 
@@ -107,7 +133,12 @@ export async function getPostBySlug(
     .select(POST_WITH_CATEGORY)
     .eq("slug", slug)
     .maybeSingle();
-  return data as PostWithCategory | null;
+
+  const post = data as PostWithCategory | null;
+  // 404 para rascunho e agendado que ainda não venceu, inclusive para quem
+  // está logado: o endereço tem que responder igual para todo mundo.
+  if (!post || !isPubliclyVisible(post)) return null;
+  return post;
 }
 
 export async function getRelatedPosts(
@@ -122,6 +153,7 @@ export async function getRelatedPosts(
     .select(POST_WITH_CATEGORY)
     .neq("id", currentPostId)
     .eq("category_id", categoryId ?? "")
+    .or(visibleFilter())
     .order("published_at", { ascending: false })
     .limit(limit);
 
@@ -133,6 +165,7 @@ export async function getRelatedPosts(
     .select(POST_WITH_CATEGORY)
     .neq("id", currentPostId)
     .neq("category_id", categoryId ?? "")
+    .or(visibleFilter())
     .order("published_at", { ascending: false })
     .limit(limit - results.length);
 
@@ -143,7 +176,10 @@ export async function getAllPublishedPostSlugs(): Promise<
   Pick<Post, "slug" | "updated_at">[]
 > {
   const supabase = await createClient();
-  const { data } = await supabase.from("posts").select("slug, updated_at");
+  const { data } = await supabase
+    .from("posts")
+    .select("slug, updated_at")
+    .or(visibleFilter());
   return data ?? [];
 }
 
