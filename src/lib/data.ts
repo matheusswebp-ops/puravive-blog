@@ -147,6 +147,15 @@ export async function getAllPublishedPostSlugs(): Promise<
   return data ?? [];
 }
 
+// Vira o status de quem já venceu. A rotina diária faz o mesmo, mas rodar
+// isto ao entrar no admin evita a tela dizer "agendado" para um post que já
+// está no ar — no editor não dava pra maquiar, o rádio lê o status cru.
+export async function publishDueScheduledPosts(): Promise<number> {
+  const supabase = await createClient();
+  const { data } = await supabase.rpc("publicar_agendados");
+  return Number(data ?? 0);
+}
+
 export async function getAllPostsForAdmin(): Promise<PostWithCategory[]> {
   const supabase = await createClient();
   const { data } = await supabase

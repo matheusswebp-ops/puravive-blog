@@ -47,6 +47,20 @@ export async function logout() {
 
 export type PostFormState = { error: string | null; savedAt?: number };
 
+// O campo datetime-local manda "2026-08-17T15:30", sem fuso nenhum. Sem marca
+// de fuso o Postgres lê como UTC e o post sai 3h adiantado. O navegador já
+// converte pra ISO, mas isso depende do JavaScript atual estar carregado —
+// aba aberta antes de um deploy roda o código antigo. Aqui é a rede de
+// segurança: sem fuso na string, assume Brasília (UTC-3, sem horário de verão
+// desde 2019), que é o fuso deste blog.
+function scheduledToIso(raw: string): string | null {
+  const value = raw.trim();
+  if (!value) return null;
+  if (/(Z|[+-]\d{2}:?\d{2})$/.test(value)) return value;
+  const withSeconds = /T\d{2}:\d{2}$/.test(value) ? `${value}:00` : value;
+  return `${withSeconds}-03:00`;
+}
+
 function readPostFields(formData: FormData) {
   const title = String(formData.get("title") || "").trim();
   const rawSlug = String(formData.get("slug") || "").trim();
@@ -64,7 +78,7 @@ function readPostFields(formData: FormData) {
       status === "publicado"
         ? new Date().toISOString()
         : status === "agendado"
-          ? String(formData.get("scheduled_at") || "") || null
+          ? scheduledToIso(String(formData.get("scheduled_at") || ""))
           : null,
     meta_title: String(formData.get("meta_title") || "").trim() || null,
     meta_description:
