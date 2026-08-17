@@ -32,6 +32,12 @@ export default async function MetricsPage({
   const perDayAverage = m.views === 0 ? 0 : Math.round(m.views / days);
   const topPostViews = m.topPosts[0]?.views ?? 0;
   const totalDevices = m.devices.mobile + m.devices.desktop;
+  const mobileShare =
+    totalDevices === 0
+      ? 0
+      : Math.round((m.devices.mobile / totalDevices) * 100);
+  const topReferrer = m.referrers[0]?.views ?? 0;
+  const topOtherPage = m.otherPages[0]?.views ?? 0;
 
   return (
     <>
@@ -108,13 +114,36 @@ export default async function MetricsPage({
               <div className="metric-tile">
                 <span className="metric-label">No celular</span>
                 <strong className="metric-value">
-                  {totalDevices === 0
-                    ? "—"
-                    : `${Math.round((m.devices.mobile / totalDevices) * 100)}%`}
+                  {totalDevices === 0 ? "—" : `${mobileShare}%`}
                 </strong>
-                <span className="metric-trend metric-trend-muted">
-                  do total de visitas
-                </span>
+                {totalDevices === 0 ? (
+                  <span className="metric-trend metric-trend-muted">
+                    do total de visitas
+                  </span>
+                ) : (
+                  <>
+                    <div className="device-split" aria-hidden="true">
+                      <span
+                        className="device-mobile"
+                        style={{ width: `${mobileShare}%` }}
+                      />
+                      <span
+                        className="device-desktop"
+                        style={{ width: `${100 - mobileShare}%` }}
+                      />
+                    </div>
+                    <div className="device-legend">
+                      <span>
+                        <i style={{ background: "var(--brand)" }} />
+                        Celular {nf.format(m.devices.mobile)}
+                      </span>
+                      <span>
+                        <i style={{ background: "var(--chart-neutral)" }} />
+                        Computador {nf.format(m.devices.desktop)}
+                      </span>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
 
@@ -122,7 +151,7 @@ export default async function MetricsPage({
               <div className="metric-card-head">
                 <h2>Visitas por dia</h2>
                 <span className="metric-card-hint">
-                  passe o mouse numa coluna pra ver o dia
+                  passe o mouse no gráfico pra ver cada dia
                 </span>
               </div>
               {m.views === 0 ? (
@@ -183,7 +212,15 @@ export default async function MetricsPage({
                   <ul className="metric-list">
                     {m.referrers.map((r) => (
                       <li key={r.host}>
-                        <span>{r.host}</span>
+                        <span className="metric-list-name">{r.host}</span>
+                        <span className="metric-list-track">
+                          <span
+                            className="metric-list-fill"
+                            style={{
+                              width: `${topReferrer === 0 ? 0 : (r.views / topReferrer) * 100}%`,
+                            }}
+                          />
+                        </span>
                         <strong>{nf.format(r.views)}</strong>
                       </li>
                     ))}
@@ -201,7 +238,17 @@ export default async function MetricsPage({
                   <ul className="metric-list">
                     {m.otherPages.map((p) => (
                       <li key={p.path}>
-                        <span>{p.path === "/" ? "/ (home)" : p.path}</span>
+                        <span className="metric-list-name">
+                          {p.path === "/" ? "/ (home)" : p.path}
+                        </span>
+                        <span className="metric-list-track">
+                          <span
+                            className="metric-list-fill"
+                            style={{
+                              width: `${topOtherPage === 0 ? 0 : (p.views / topOtherPage) * 100}%`,
+                            }}
+                          />
+                        </span>
                         <strong>{nf.format(p.views)}</strong>
                       </li>
                     ))}

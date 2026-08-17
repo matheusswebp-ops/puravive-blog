@@ -9,6 +9,8 @@
   --brand: #0b8a3b;
   --brand-ink: #1b5e2c;
   --brand-soft: #e9f5e4;
+  /* neutro dos gráficos: validado contra o verde da marca (ΔE 16,2) */
+  --chart-neutral: #8a9683;
   --shadow: 0 20px 45px -25px rgba(20, 33, 15, 0.16);
   --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
   --font-body: var(--font-worksans), ui-sans-serif, system-ui, -apple-system,
@@ -1076,6 +1078,9 @@ a.pill:hover {
 }
 
 .admin-content {
+  /* o body é flex-column: sem width explícito, a margem automática cancela o
+     stretch e a caixa encolhe pro conteúdo */
+  width: 100%;
   max-width: 860px;
   margin-inline: auto;
   padding: clamp(24px, 4vw, 48px) clamp(20px, 4vw, 48px) 80px;
@@ -1348,7 +1353,6 @@ a.pill:hover {
   width: 100%;
   height: auto;
   display: block;
-  overflow: visible;
 }
 .chart-grid {
   stroke: var(--line);
@@ -1357,15 +1361,23 @@ a.pill:hover {
 .chart-bar {
   fill: var(--brand);
 }
-.chart-hit {
-  fill: transparent;
+.chart-area {
+  fill: var(--brand);
+  fill-opacity: 0.1;
 }
-.chart-col:hover .chart-bar {
-  fill: var(--brand-ink);
+.chart-line {
+  fill: none;
+  stroke: var(--brand);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
 }
-.chart-col:hover .chart-hit {
-  fill: var(--brand-soft);
-  opacity: 0.5;
+/* anel na cor da superfície: o ponto continua legível sobre a linha */
+.chart-end-dot,
+.chart-dot {
+  fill: var(--brand);
+  stroke: var(--card);
+  stroke-width: 2;
 }
 .chart-axis-label {
   fill: var(--ink-soft);
@@ -1374,9 +1386,109 @@ a.pill:hover {
 }
 .chart-value-label {
   fill: var(--ink);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   font-family: var(--font-body);
+}
+
+.chart-hit {
+  fill: transparent;
+}
+.chart-tip {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.12s ease;
+}
+.chart-hover:hover .chart-tip {
+  opacity: 1;
+}
+.chart-crosshair {
+  stroke: var(--brand);
+  stroke-width: 1;
+  stroke-opacity: 0.35;
+}
+.chart-tip-box {
+  fill: var(--ink);
+  fill-opacity: 0.94;
+}
+.chart-tip-label {
+  fill: #fff;
+  fill-opacity: 0.7;
+  font-size: 11px;
+  font-family: var(--font-body);
+}
+.chart-tip-value {
+  fill: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: var(--font-body);
+}
+
+.chart-table {
+  margin-top: 12px;
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+}
+.chart-table summary {
+  cursor: pointer;
+  user-select: none;
+}
+.chart-table table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+.chart-table th,
+.chart-table td {
+  text-align: left;
+  padding: 5px 8px;
+  border-bottom: 1px solid var(--line);
+  font-variant-numeric: tabular-nums;
+}
+.chart-table th {
+  color: var(--ink);
+  font-weight: 600;
+}
+.chart-table td:last-child,
+.chart-table th:last-child {
+  text-align: right;
+}
+
+/* barra de dois segmentos: verde destaca, cinza recua */
+.device-split {
+  display: flex;
+  gap: 2px;
+  height: 8px;
+  margin-top: 8px;
+}
+.device-split span {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+}
+.device-split .device-mobile {
+  background: var(--brand);
+}
+.device-split .device-desktop {
+  background: var(--chart-neutral);
+}
+.device-legend {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+  font-size: 0.72rem;
+  color: var(--ink-soft);
+}
+.device-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.device-legend i {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  display: block;
 }
 
 .metric-rank {
@@ -1437,13 +1549,31 @@ a.pill:hover {
   flex-direction: column;
 }
 .metric-list li {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(70px, auto) minmax(40px, 1fr) auto;
   align-items: center;
-  justify-content: space-between;
   gap: 12px;
   padding: 10px 0;
   border-bottom: 1px solid var(--line);
   font-size: 0.88rem;
+}
+.metric-list-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.metric-list-track {
+  height: 8px;
+  background: var(--brand-soft);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.metric-list-fill {
+  display: block;
+  height: 100%;
+  background: var(--brand);
+  border-radius: 999px;
+  min-width: 3px;
 }
 .metric-list li:last-child {
   border-bottom: none;
