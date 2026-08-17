@@ -57,13 +57,7 @@ export default async function AdminDashboard({
         </div>
 
         <nav className="admin-tabs">
-          {TABS.filter(
-            // A aba de agendados só aparece quando existe algum agendado.
-            (tab) =>
-              tab.key !== "agendado" ||
-              tab.key === active ||
-              count("agendado") > 0
-          ).map((tab) => (
+          {TABS.map((tab) => (
             <Link
               key={tab.key}
               href={tab.key === "todos" ? "/admin" : `/admin?status=${tab.key}`}
