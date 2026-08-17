@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import type { PostStatus } from "@/lib/types";
 
 function slugify(input: string) {
   return input
@@ -147,6 +148,40 @@ export async function updatePost(
     revalidatePath(`/${existing.slug}`);
   }
   redirect("/admin");
+}
+
+export async function setPostStatus(postId: string, nextStatus: PostStatus) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) redirect("/admin/login");
+
+  const { data: existing } = await supabase
+    .from("posts")
+    .select("slug, published_at")
+    .eq("id", postId)
+    .maybeSingle();
+
+  const fields: { status: PostStatus; published_at?: string } = {
+    status: nextStatus,
+  };
+  if (nextStatus === "publicado") {
+    // Mantém a data original de quem já esteve no ar, pra republicar não jogar
+    // o post pro topo do blog de novo. Data futura (post agendado) vira agora.
+    const current = existing?.published_at
+      ? new Date(existing.published_at)
+      : null;
+    if (!current || current.getTime() > Date.now()) {
+      fields.published_at = new Date().toISOString();
+    }
+  }
+
+  await supabase.from("posts").update(fields).eq("id", postId);
+
+  revalidatePath("/admin");
+  revalidatePath("/");
+  if (existing?.slug) revalidatePath(`/${existing.slug}`);
 }
 
 export async function deletePost(postId: string) {

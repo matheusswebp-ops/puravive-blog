@@ -1047,6 +1047,48 @@ a.pill:hover {
   font-size: 0.95rem;
 }
 
+.admin-tabs {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-bottom: 22px;
+  border-bottom: 1px solid var(--line);
+}
+.admin-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 10px 14px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+.admin-tab:hover {
+  color: var(--brand-ink);
+}
+.admin-tab-active {
+  color: var(--brand-ink);
+  border-bottom-color: var(--brand);
+}
+.admin-tab-count {
+  font-size: 0.72rem;
+  font-weight: 700;
+  background: var(--line);
+  color: var(--ink-soft);
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+.admin-tab-active .admin-tab-count {
+  background: var(--brand-soft);
+  color: var(--brand-ink);
+}
+
 .admin-post-table {
   display: flex;
   flex-direction: column;
@@ -1056,13 +1098,24 @@ a.pill:hover {
   background: var(--card);
 }
 .admin-post-row {
+  position: relative;
   display: grid;
-  grid-template-columns: 110px 1fr auto;
+  grid-template-columns: 110px 1fr auto auto;
   align-items: center;
   gap: 16px;
   padding: 16px 20px;
   border-bottom: 1px solid var(--line);
   transition: background 0.15s ease;
+}
+/* o link do título cobre a linha inteira, menos o botão de ação */
+.admin-post-title::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+.admin-row-action {
+  position: relative;
+  z-index: 1;
 }
 .admin-post-row:last-child {
   border-bottom: none;
@@ -1103,6 +1156,59 @@ a.pill:hover {
 .admin-status-publicado {
   background: var(--brand-soft);
   color: var(--brand-ink);
+}
+
+.admin-row-action {
+  border: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--ink-soft);
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 7px 14px;
+  border-radius: 999px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+.admin-row-action:hover:not(:disabled) {
+  color: var(--brand-ink);
+  border-color: var(--brand);
+}
+.admin-row-action:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+.admin-row-action-publish {
+  background: var(--brand);
+  border-color: var(--brand);
+  color: #fff;
+}
+.admin-row-action-publish:hover:not(:disabled) {
+  background: var(--brand-ink);
+  border-color: var(--brand-ink);
+  color: #fff;
+}
+
+@media (max-width: 620px) {
+  .admin-post-row {
+    grid-template-columns: 1fr auto;
+    gap: 8px 12px;
+  }
+  .admin-post-title {
+    grid-column: 1 / -1;
+    order: -1;
+    white-space: normal;
+  }
+  .admin-post-category {
+    justify-self: start;
+  }
+  .admin-row-action {
+    grid-column: 1 / -1;
+    justify-self: end;
+  }
 }
 
 .admin-login-wrap {

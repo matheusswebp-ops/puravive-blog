@@ -1,6 +1,8 @@
 import Link from "next/link";
 import AdminHeader from "@/components/admin/AdminHeader";
+import PostStatusToggle from "@/components/admin/PostStatusToggle";
 import { getAllPostsForAdmin } from "@/lib/data";
+import type { PostStatus } from "@/lib/types";
 
 const STATUS_LABEL: Record<string, string> = {
   rascunho: "Rascunho",
@@ -8,8 +10,37 @@ const STATUS_LABEL: Record<string, string> = {
   publicado: "Publicado",
 };
 
-export default async function AdminDashboard() {
+const TABS: { key: PostStatus | "todos"; label: string; empty: string }[] = [
+  { key: "todos", label: "Todos", empty: "Nenhum post ainda. Crie o primeiro." },
+  { key: "rascunho", label: "Rascunhos", empty: "Nenhum rascunho no momento." },
+  { key: "agendado", label: "Agendados", empty: "Nenhum post agendado." },
+  {
+    key: "publicado",
+    label: "Publicados",
+    empty: "Nenhum post publicado ainda.",
+  },
+];
+
+export default async function AdminDashboard({
+  searchParams,
+}: {
+  searchParams: Promise<{ status?: string }>;
+}) {
+  const { status } = await searchParams;
   const posts = await getAllPostsForAdmin();
+
+  const active =
+    TABS.find((t) => t.key === status)?.key ?? ("todos" as const);
+
+  const count = (key: PostStatus | "todos") =>
+    key === "todos"
+      ? posts.length
+      : posts.filter((p) => p.status === key).length;
+
+  const visible =
+    active === "todos" ? posts : posts.filter((p) => p.status === active);
+
+  const activeTab = TABS.find((t) => t.key === active)!;
 
   return (
     <>
@@ -22,24 +53,45 @@ export default async function AdminDashboard() {
           </Link>
         </div>
 
-        {posts.length === 0 ? (
-          <p className="admin-empty">Nenhum post ainda. Crie o primeiro.</p>
+        <nav className="admin-tabs">
+          {TABS.filter(
+            // A aba de agendados só aparece quando existe algum agendado.
+            (tab) =>
+              tab.key !== "agendado" ||
+              tab.key === active ||
+              count("agendado") > 0
+          ).map((tab) => (
+            <Link
+              key={tab.key}
+              href={tab.key === "todos" ? "/admin" : `/admin?status=${tab.key}`}
+              className={`admin-tab${tab.key === active ? " admin-tab-active" : ""}`}
+            >
+              {tab.label}
+              <span className="admin-tab-count">{count(tab.key)}</span>
+            </Link>
+          ))}
+        </nav>
+
+        {visible.length === 0 ? (
+          <p className="admin-empty">{activeTab.empty}</p>
         ) : (
           <div className="admin-post-table">
-            {posts.map((post) => (
-              <Link
-                key={post.id}
-                href={`/admin/posts/${post.id}`}
-                className="admin-post-row"
-              >
+            {visible.map((post) => (
+              <div key={post.id} className="admin-post-row">
                 <span className={`admin-status admin-status-${post.status}`}>
                   {STATUS_LABEL[post.status] ?? post.status}
                 </span>
-                <span className="admin-post-title">{post.title}</span>
+                <Link
+                  href={`/admin/posts/${post.id}`}
+                  className="admin-post-title"
+                >
+                  {post.title}
+                </Link>
                 <span className="admin-post-category">
                   {post.category?.name ?? "Sem categoria"}
                 </span>
-              </Link>
+                <PostStatusToggle postId={post.id} status={post.status} />
+              </div>
             ))}
           </div>
         )}
