@@ -32,8 +32,14 @@ export async function login(
     password,
   });
 
+  // Só credencial errada é culpa do que foi digitado. E-mail não confirmado,
+  // limite de tentativas ou projeto fora do ar davam a mesma mensagem, o que
+  // manda a pessoa reconferir a senha à toa — nesses casos o motivo aparece.
   if (error) {
-    return { error: "E-mail ou senha incorretos." };
+    if (error.code === "invalid_credentials") {
+      return { error: "E-mail ou senha incorretos." };
+    }
+    return { error: `Não foi possível entrar: ${error.message}` };
   }
 
   redirect("/admin");
