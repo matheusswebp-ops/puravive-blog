@@ -18,19 +18,13 @@ export default function AboutPage() {
       </div>
 
       <section className="about-hero-banner">
-        <picture>
-          <source
-            media="(max-width: 620px)"
-            srcSet="https://ierdkwezlsxkknjzokyy.supabase.co/storage/v1/object/public/covers/about-hero-mobile.png"
-          />
-          <img
-            src="/about/hero.png"
-            alt="Cuidado que começa antes do produto. A PuraVive nasceu pra oferecer suplementação natural pra quem já passou da fase de acreditar em solução mágica e quer entender o que realmente funciona no corpo."
-            width={1914}
-            height={822}
-            fetchPriority="high"
-          />
-        </picture>
+        <img
+          src="/about/hero.png"
+          alt="Linha de suplementos PuraVive: Intest Free, UC Flex II, Liphos 3D, Ômegas Femme 3-6-9, Keratin Maxx e Nutri Natus Amargo."
+          width={2172}
+          height={724}
+          fetchPriority="high"
+        />
       </section>
 
       <section className="wrap about-body">
