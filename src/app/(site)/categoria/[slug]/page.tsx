@@ -13,9 +13,23 @@ type Props = {
   params: Promise<{ slug: string }>;
 };
 
-const CATEGORY_BANNERS: Record<string, { src: string; width: number; height: number }> = {
-  articulacao: { src: "/categories/articulacao.png", width: 2172, height: 724 },
-};
+// Cada banner mora em /categories/{slug}.png e todos são exportados no mesmo
+// tamanho. O conjunto abaixo é só pra saber quem já tem arte: categoria sem
+// banner cai no cabeçalho de texto.
+const BANNER_WIDTH = 2172;
+const BANNER_HEIGHT = 724;
+
+const CATEGORIES_WITH_BANNER = new Set([
+  "articulacao",
+  "beleza",
+  "constipacao",
+  "digestao",
+  "emagrecimento",
+  "insonia",
+  "performance-masculina",
+  "saude-e-bem-estar",
+  "saude-feminina",
+]);
 
 export async function generateMetadata({
   params,
@@ -49,13 +63,13 @@ export default async function CategoryPage({ params }: Props) {
         <span className="current">{category.name}</span>
       </div>
 
-      {CATEGORY_BANNERS[slug] ? (
+      {CATEGORIES_WITH_BANNER.has(slug) ? (
         <section className="category-hero-banner">
           <Image
-            src={CATEGORY_BANNERS[slug].src}
+            src={`/categories/${slug}.png`}
             alt={category.name}
-            width={CATEGORY_BANNERS[slug].width}
-            height={CATEGORY_BANNERS[slug].height}
+            width={BANNER_WIDTH}
+            height={BANNER_HEIGHT}
             priority
           />
           {(category.description || posts.length >= 0) && (
