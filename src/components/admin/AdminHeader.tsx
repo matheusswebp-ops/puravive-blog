@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import AdminNav from "./AdminNav";
 import LogoutButton from "./LogoutButton";
@@ -7,7 +8,14 @@ export default function AdminHeader() {
     <header className="admin-header">
       <div className="admin-header-left">
         <Link href="/admin" className="admin-header-title">
-          Admin · PuraVive
+          <Image
+            src="https://ierdkwezlsxkknjzokyy.supabase.co/storage/v1/object/public/covers/logo-puravive.png"
+            alt="PuraVive"
+            width={110}
+            height={22}
+            priority
+          />
+          <span>Admin</span>
         </Link>
         <AdminNav />
       </div>

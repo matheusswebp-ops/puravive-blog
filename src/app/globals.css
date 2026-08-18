@@ -995,6 +995,18 @@ a.pill:hover {
   font-weight: 600;
   font-size: 1.1rem;
   color: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.admin-header-title img {
+  height: 22px;
+  width: auto;
+}
+/* O "Admin" fica pendurado na logo, então a divisória separa as duas marcas. */
+.admin-header-title span {
+  padding-left: 10px;
+  border-left: 1px solid var(--line);
 }
 .admin-header-left {
   display: flex;
