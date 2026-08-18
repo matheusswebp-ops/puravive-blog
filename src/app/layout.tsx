@@ -18,6 +18,7 @@ const worksans = localFont({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://blog.puravive.com.br"),
   title: {
     default: "Blog PuraVive",
     template: "%s · Blog PuraVive",
